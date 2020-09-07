@@ -1,4 +1,6 @@
 const User = require('../models/user.model.js');
+const nodemailer = require('nodemailer');
+const out = require('./MailTemplate.js');
 
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
@@ -21,6 +23,59 @@ exports.create = (req, res) => {
         });
     }
 
+				//Create Nodemailer Transport
+		var transporter = nodemailer.createTransport({
+	 host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      type: "OAuth2",
+      user: "rohan.stutalk@gmail.com",
+      clientId:"292427988066-5i31u24ei0e4ep9la470otrsd3alq2bu.apps.googleusercontent.com",
+      clientSecret: "S3J4qYel2Bm8NzJAarbK0i3g",
+      refreshToken: "1//04pXBOaJb6_OwCgYIARAAGAQSNwF-L9IrCKdZ8_X1wcXnTNKUWvw-V2x8hCn0nh2AIUiEDXO7VqypOr2EmTmdV8xzDLOyLjqT8hE",
+      accessToken:"ya29.a0AfH6SMD4-DRRD_Hkh13u_m7Xp-iWKjhHc8Qebd0L96Kq3Z6EtWU2EBOs5ElIkZAgMvoakrcei5l_CoJ3JW5PscELL57EfmdccgOonqS1WVFkCJNO8R_bPiKTK6pZXu6_wmsjQsDXh6K7rF8yV-CzTIQHdGJsZnWS9JQ"
+    }
+});
+
+//HTML Template 
+
+
+//FirstHalf of the Template
+
+var temp1 = out.template
+
+//SecondHalf of the Template
+
+var temp2 = `<div><ul>
+                  <li>First Name: ${req.body.fname}</li>
+                  <li>Last Name: ${req.body.lname}</li>
+                  <li>Email ID: ${req.body.email}</li>
+                  <li>Phone Number: ${req.body.phone}</li>
+                  </ul></div>
+                <div>&nbsp;</div>
+              </div> 
+              </div>
+              <br>
+              
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div>&nbsp;</div>
+        
+    </body>
+</html>` 
+
+var output= temp1+temp2;
+
+var mailOptions = {
+	from: 'Rohan Christopher <rohan.stutalk@gmail.com>',
+	to: `${req.body.email}`,
+	subject:'Test NodeMailer',
+	html:`${output}`
+};
+
     // Create a new User
     const user = new User({
         fname: req.body.fname, 
@@ -33,6 +88,7 @@ exports.create = (req, res) => {
     user.save()
     .then(data => {
         res.sendFile(__dirname + "/success.html");
+				transporter.sendMail(mailOptions);
     }).catch(err => {
         res.sendFile(__dirname + "/error.html");
     });
