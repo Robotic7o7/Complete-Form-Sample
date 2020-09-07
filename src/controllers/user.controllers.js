@@ -1,9 +1,9 @@
-const Applicant = require('../models/user.model.js');
+const User = require('../models/user.model.js');
 const nodemailer = require('nodemailer');
 
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
-    Applicant.find()
+    User.find()
     .then(users => {
         res.send(users);
     }).catch(err => {
@@ -77,7 +77,7 @@ var mailOptions = {
 };
 
     // Create a new User
-    const user = new Applicant({
+    const user = new User({
         fname: req.body.fname, 
         lname: req.body.lname,
         email: req.body.email,
@@ -97,7 +97,7 @@ var mailOptions = {
 
 // Find a single User with a id
 exports.findOne = (req, res) => {
-    Applicant.findById(req.params.id)
+    User.findById(req.params.id)
     .then(user => {
         if(!user) {
             return res.status(404).send({
@@ -127,7 +127,7 @@ exports.update = (req, res) => {
     }
 
     // Find user and update it with the request body
-    Applicant.findByIdAndUpdate(req.params.id, {
+    User.findByIdAndUpdate(req.params.id, {
         first_name: req.body.first_name, 
         last_name: req.body.last_name,
         email: req.body.last_name,
@@ -154,7 +154,7 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-    Applicant.findByIdAndRemove(req.params.id)
+    User.findByIdAndRemove(req.params.id)
     .then(user => {
         if(!user) {
             return res.status(404).send({

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ApplicantSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     fname:String,
     lname:String,
     email:String,
@@ -10,4 +10,4 @@ const ApplicantSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Applicant', ApplicantSchema);
+module.exports = mongoose.model('User', UserSchema);
